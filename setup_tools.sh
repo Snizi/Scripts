@@ -33,6 +33,13 @@ install_go_tools()
 	
 }
 
+install_metasploit()
+{
+  curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
+  chmod 755 msfinstall && \
+  ./msfinstall
+}
+
 clone_repositories()
 {
 	declare -a repositories=("https://github.com/sqlmapproject/sqlmap.git"
@@ -55,3 +62,5 @@ install_go
 install_go_tools
 
 clone_repositories
+
+install_metasploit
