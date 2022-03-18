@@ -4,11 +4,11 @@
 CURRENT_DT=$(date +"%Y-%m-%d-%T")
 ROOTS_FILE=$1
 COMPANY_FOLDER=~/recon/"$2"
+RESOLVERS=~/tools/dnsvalidator/resolvers.txt
 
 
 run_amass(){
-    # -brute -w ~/tools/Wordlists/riot_subs.txt
-    amass enum -silent  -max-dns-queries 3000 -active  -d "$domain" -o "$current_folder"/amass.txt
+    amass enum -silent -brute -w ~/tools/Wordlists/riot_subs.txt -rf "$RESOLVERS"-active -d "$domain" -o "$current_folder"/amass.txt
 }
 
 run_sublister(){
@@ -24,11 +24,11 @@ merge_domains(){
 }
 
 run_massdns(){
-    cat "$current_folder"/"$1" | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/"$2"
+    cat "$current_folder"/"$1" | massdns -r "$RESOLVERS" -t A -o L -w "$current_folder"/"$2"
 }
 
 run_dnsgen(){
-    cat "$current_folder"/massdns-output.txt | dnsgen - | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/permutated-domains.txt
+    cat "$current_folder"/massdns-output.txt | dnsgen - | massdns -r "$RESOLVERS" -t A -o L -w "$current_folder"/permutated-domains.txt
 }
 
 run_httprobe(){
