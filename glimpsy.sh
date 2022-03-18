@@ -7,7 +7,8 @@ COMPANY_FOLDER=~/recon/"$2"
 
 
 run_amass(){
-    amass enum -silent -brute -w ~/tools/Wordlists/riot_subs.txt -max-dns-queries 3000 -active  -d "$domain" -o "$current_folder"/amass.txt
+    # -brute -w ~/tools/Wordlists/riot_subs.txt
+    amass enum -silent  -max-dns-queries 3000 -active  -d "$domain" -o "$current_folder"/amass.txt
 }
 
 run_sublister(){
@@ -23,15 +24,15 @@ merge_domains(){
 }
 
 run_massdns(){
-    cat "$current_folder"/merged-domains.txt | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/massdns_output.txt
+    cat "$current_folder"/"$1" | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/"$2"
 }
 
 run_dnsgen(){
-    cat "$current_folder"/massdns_output.txt | dnsgen - | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/permutated-domains.txt
+    cat "$current_folder"/massdns-output.txt | dnsgen - | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/permutated-domains.txt
 }
 
 run_httprobe(){
-    cat "$current_folder"/permutated-domains | httprobe -c 50 -t 3000 >> "$current_folder"/live-hosts.txt
+    cat "$current_folder"/final-resolved.txt | httprobe -c 50 -t 3000 >> "$current_folder"/live-hosts.txt
 }
 
 run_aquatone(){
@@ -49,8 +50,9 @@ while read domain; do
     run_sublister
     run_assetfinder
     merge_domains
-    run_massdns
+    run_massdns merged-domains.txt massdns-output.txt
     run_dnsgen
+    run_massdns permutated-domains.txt final-resolved.txt
     run_httprobe
     run_dirsearch
     run_aquatone
