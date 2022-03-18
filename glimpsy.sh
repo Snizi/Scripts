@@ -8,7 +8,7 @@ RESOLVERS=~/tools/dnsvalidator/resolvers.txt
 
 
 run_amass(){
-    amass enum -silent -brute -w ~/tools/Wordlists/riot_subs.txt -rf "$RESOLVERS"-active -d "$domain" -o "$current_folder"/amass.txt
+    amass enum -silent -brute -w ~/tools/Wordlists/riot_subs.txt -rf "$RESOLVERS" -active -d "$domain" -o "$current_folder"/amass.txt
 }
 
 run_sublister(){
