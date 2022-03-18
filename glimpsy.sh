@@ -27,7 +27,7 @@ run_massdns(){
 }
 
 run_dnsgen(){
-    cat "$current_folder"/massdns_out.txt | dnsgen - | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/permutated-domains.txt
+    cat "$current_folder"/massdns_output.txt | dnsgen - | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/permutated-domains.txt
 }
 
 run_httprobe(){
