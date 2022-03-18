@@ -23,11 +23,15 @@ merge_domains(){
 }
 
 run_massdns(){
-    cat "$current_folder"/merged-domains.txt | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -a -o -w "$current_folder"/massdns_output.txt
+    cat "$current_folder"/merged-domains.txt | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/massdns_output.txt
+}
+
+run_dnsgen(){
+    cat "$current_folder"/massdns_out.txt | dnsgen - | massdns -r ~/tools/dnsvalidator/resolvers.txt -t A -o L -w "$current_folder"/permutated-domains.txt
 }
 
 run_httprobe(){
-    cat "$current_folder"/merged-domains.txt | httprobe -c 50 -t 3000 >> "$current_folder"/live-hosts.txt
+    cat "$current_folder"/permutated-domains | httprobe -c 50 -t 3000 >> "$current_folder"/live-hosts.txt
 }
 
 run_aquatone(){
@@ -45,6 +49,8 @@ while read domain; do
     run_sublister
     run_assetfinder
     merge_domains
+    run_massdns
+    run_dnsgen
     run_httprobe
     run_dirsearch
     run_aquatone
