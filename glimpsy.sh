@@ -39,9 +39,6 @@ run_aquatone(){
     cat "$current_folder"/live-hosts.txt | aquatone -out "$current_folder" -ports xlarge -silent
 }
 
-run_dirsearch(){
-    python3 ~/tools/dirsearch/dirsearch.py -l "$current_folder"/live-hosts.txt -e .* -w ~/tools/Wordlists/fastdir.txt --format=simple -o "$current_folder"/dirsearch -t 50 
-}
 
 while read domain; do
     current_folder="$COMPANY_FOLDER"/"$CURRENT_DT"/"$domain"
@@ -54,7 +51,6 @@ while read domain; do
     run_dnsgen
     run_massdns permutated-domains.txt final-resolved.txt
     run_httprobe
-    run_dirsearch
     run_aquatone
 done < "$ROOTS_FILE"
 
